@@ -137,7 +137,24 @@ fzf-gcloud-widget() {
 }
 # Bind the gcloud fzf helper to CTRL-I
 zle     -N   fzf-gcloud-widget
-bindkey '^k' fzf-gcloud-widget
+bindkey '^g' fzf-gcloud-widget
+
+# Project selection function/shortcut
+# Thanks to sei40kr/zsh-fzf-gcloud
+function fzf-gcloud-config-set-project() {
+    local project="$(gcloud projects list |
+        fzf --header-lines=1 --reverse |
+        awk '{ print $1 }')"
+
+    if [[ -n "$project" ]]; then
+        gcloud config set project "$project"
+    fi
+}
+zle -N fzf-gcloud-config-set-project
+bindkey '\eg' fzf-gcloud-config-set-project
+
+# Autocomplete loading
+source "${$(which gcloud)%/*/*}/completion.zsh.inc"
 
 } always {
   eval $__fzf_key_bindings_options
