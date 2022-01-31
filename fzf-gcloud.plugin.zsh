@@ -154,7 +154,7 @@ zle -N fzf-gcloud-config-set-project
 bindkey '\eg' fzf-gcloud-config-set-project
 
 # Autocomplete loading
-source "${$(which gcloud)%/*/*}/completion.zsh.inc"
+source "$(gcloud info --format 'value(installation.sdk_root)')/completion.zsh.inc"
 
 } always {
   eval $__fzf_key_bindings_options
